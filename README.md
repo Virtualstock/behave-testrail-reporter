@@ -7,12 +7,14 @@ This integration is used to add test results to TestRail automatically when Beha
 
 ## Setup
 
-Add TestrailReporter to behave reporters in your `/features/environment.py`
+Add `TestrailReporter` to behave reporters in your `/features/environment.py` by adding this code in `before_all()`
 
 ```python
-current_branch = os.environ.get('CIRCLE_BRANCH') # Change this to get the current build branch of your CI system
-testrail_reporter = TestrailReporter(current_branch)
-context.config.reporters.append(testrail_reporter)
+def before_all(context):
+    # ... all your other awesome code in here
+    current_branch = os.environ.get('CIRCLE_BRANCH') # Change this to get the current build branch of your CI system
+    testrail_reporter = TestrailReporter(current_branch)
+    context.config.reporters.append(testrail_reporter)
 ```
 
 
