@@ -48,8 +48,6 @@ projects:
 | Variable name       | Description                 |
 | ------------------- | --------------------------- |
 | TESTRAIL_KEY        | TestRail user password      |
-| TESTRAIL_PROJECT_ID | TestRail project ID         |
-| TESTRAIL_SUITE_ID   | TestRail Suite of tests ID  |
 | TESTRAIL_USER       | TestRail user email address |
 
 
