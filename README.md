@@ -7,6 +7,15 @@ This integration is used to add test results to TestRail automatically when Beha
 
 ## Setup
 
+Add TestrailReporter to behave reporters in your `/features/environment.py`
+
+```python
+current_branch = os.environ.get('CIRCLE_BRANCH') # Change this to get the current build branch of your CI system
+testrail_reporter = TestrailReporter(current_branch)
+context.config.reporters.append(testrail_reporter)
+```
+
+
 Create a `testrail.yml` config file in the root of your project
 
 
@@ -40,6 +49,7 @@ projects:
 | TESTRAIL_PROJECT_ID | TestRail project ID         |
 | TESTRAIL_SUITE_ID   | TestRail Suite of tests ID  |
 | TESTRAIL_USER       | TestRail user email address |
+
 
 
 ## How to use
