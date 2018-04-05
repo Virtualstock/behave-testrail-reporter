@@ -10,7 +10,7 @@ from behave.model_core import Status
 from .api import APIClient
 
 # -- DISABLED: optional_steps = ('untested', 'undefined')
-optional_steps = (Status.untested,) # MAYBE: Status.undefined
+optional_steps = (Status.untested,)  # MAYBE: Status.undefined
 status_order = (Status.passed, Status.failed, Status.skipped,
                 Status.undefined, Status.untested)
 
@@ -57,7 +57,6 @@ class TestrailReporter(Reporter):
         'untested': STATUS_UNTESTED,
     }
 
-
     def __init__(self, branch_name):
         self.config = {}
         self.projects = []
@@ -72,9 +71,9 @@ class TestrailReporter(Reporter):
         self._load_config()
         self.setup_test_run()
         self.case_summary = {
-            Status.passed.name: 0, 
+            Status.passed.name: 0,
             Status.failed.name: 0,
-            Status.skipped.name: 0, 
+            Status.skipped.name: 0,
             Status.untested.name: 0}
         self.duration = 0.0
         self.failed_cases = []
@@ -90,10 +89,10 @@ class TestrailReporter(Reporter):
     def end(self):
          # -- SHOW FAILED SCENARIOS (optional):
         if self.show_failed_cases and self.failed_cases:
-            print("\nFailing test case pushes to Testrail:\n")
+            print('\nTestrail test results failed for test cases:\n')
             for case_id in self.failed_cases:
-                print(u"case_id:  %s\n" % (case_id))
-            print("\n")
+                print(u'case_id:  %s\n' % (case_id))
+            print('\n')
 
         # -- SHOW SUMMARY COUNTS:
         print(format_summary('testrail test case', self.case_summary))
@@ -111,14 +110,16 @@ class TestrailReporter(Reporter):
     def _load_projects_from_config(self, config):
         projects_config = config.get('projects', [])
         if len(projects_config) is 0:
-            raise Exception('Your testrail.yml config file does not have any project configured!')
+            raise Exception(
+                'Your testrail.yml config file does not have any project configured!')
 
         for project_config in projects_config:
             testrail_project = TestrailProject(
                 id=project_config.get('id'),
                 name=project_config.get('name'),
                 suite_id=project_config.get('suite_id'),
-                allowed_branch_pattern=project_config.get('allowed_branch_pattern')
+                allowed_branch_pattern=project_config.get(
+                    'allowed_branch_pattern')
             )
             self.projects.append(testrail_project)
 
@@ -127,8 +128,8 @@ class TestrailReporter(Reporter):
         This method contains the logic to decide if the branch_name is allowed to have test run and
         test results added to it.
         """
-        allowed_branch_names = r'' + str(testrail_project.allowed_branch_pattern)
-        print('branch {} is {}'.format(branch_name, testrail_project.allowed_branch_pattern))
+        allowed_branch_names = r'' + \
+            str(testrail_project.allowed_branch_pattern)
 
         return bool(re.match(allowed_branch_names, branch_name))
 
@@ -209,7 +210,6 @@ class TestrailReporter(Reporter):
             self.process_scenario(scenario)
 
 
-
 class TestrailProject(object):
     def __init__(self, id, name, suite_id, test_run_name='', allowed_branch_pattern='*'):
         self.id = id
@@ -219,4 +219,3 @@ class TestrailProject(object):
         self.allowed_branch_pattern = allowed_branch_pattern
         self.test_run = None
         self.cases = {}
-
