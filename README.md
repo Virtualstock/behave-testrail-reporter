@@ -30,7 +30,6 @@ projects:
     name: 'Project Name'
     id: 123
     suite_id: 123
-    test_run_name: '{branch_name}'
     allowed_branch_pattern: '^(master|release\/\d+([\.\d]+)?)$'
 ```
 
@@ -39,7 +38,6 @@ projects:
 | name                   | Project name                                               |  
 | id                     | Testrail project id                                        |  
 | suite_id               | Testrail Suite id                                          |  
-| test_run_name          | test run name that will be created on testrail             |  
 | allowed_branch_pattern | Regular expression to restrict when a test run is executed |  
 
 
