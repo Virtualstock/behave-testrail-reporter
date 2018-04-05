@@ -3,14 +3,14 @@ import os
 import yaml
 import sys
 
+from jsonschema import validate
 from behave.reporter.base import Reporter
 from behave.model import ScenarioOutline
 from behave.model_core import Status
 
 from .api import APIClient
 
-# -- DISABLED: optional_steps = ('untested', 'undefined')
-optional_steps = (Status.untested,)  # MAYBE: Status.undefined
+optional_steps = (Status.untested,)
 status_order = (Status.passed, Status.failed, Status.skipped,
                 Status.undefined, Status.untested)
 
@@ -69,7 +69,6 @@ class TestrailReporter(Reporter):
         self.testrail_run = None
         self.testrail_cases = {}
         self._load_config()
-        self.setup_test_run()
         self.case_summary = {
             Status.passed.name: 0,
             Status.failed.name: 0,
@@ -87,7 +86,6 @@ class TestrailReporter(Reporter):
                 self.process_scenario(scenario)
 
     def end(self):
-         # -- SHOW FAILED SCENARIOS (optional):
         if self.show_failed_cases and self.failed_cases:
             print('\nTestrail test results failed for test cases:\n')
             for case_id in self.failed_cases:
@@ -106,6 +104,36 @@ class TestrailReporter(Reporter):
                 self._load_projects_from_config(self.config)
             except yaml.YAMLError as exc:
                 print(exc)
+        self._validate_config(self.config)
+
+    def _validate_config(self, config):
+        schema = """
+        type: object
+        properties:
+            base_url:
+                type: string
+            projects:
+                type: array
+                items:
+                    type: object
+                    properties:
+                        id:
+                            type: number
+                        name:
+                            type: string
+                        suite_id:
+                            type: number
+                        allowed_branch_pattern:
+                            type: string
+                    required: ['id', 'name', 'suite_id', 'allowed_branch_pattern']
+        required: ['base_url']
+        """
+
+        try:
+            validate(config, yaml.load(schema))
+        except Exception, exception:
+            raise Exception(
+                'Invalid testrail.yml file! error: {}'.format(exception.message))
 
     def _load_projects_from_config(self, config):
         projects_config = config.get('projects', [])
@@ -133,36 +161,52 @@ class TestrailReporter(Reporter):
 
         return bool(re.match(allowed_branch_names, branch_name))
 
-    def setup_test_run(self):
+    def setup_test_run(self, testrail_project):
         """
-        Sets up the testrail run.
+        Sets up the testrail run for testrail_project.
         """
-        self.testrail_client = APIClient(
-            base_url=self.config.get('base_url'),
-            username=self.username,
-            password=self.secret_key,
+        testrail_project.test_run = self._get_testrail_client().get_run_for_branch(
+            testrail_project.id,
+            self.branch_name
         )
 
-        for testrail_project in self.projects:
-            testrail_project.test_run = self.testrail_client.get_run_for_branch(
-                testrail_project.id,
-                self.branch_name
-            )
-
-            if testrail_project.test_run is None:
-                # @todo allow to customise the test run name that is created
-                test_run_name = self.branch_name
-                testrail_project.test_run = self.testrail_client.create_run(
-                    testrail_project.id,
-                    testrail_project.suite_id,
-                    test_run_name,
-                )
-
-            cases = self.testrail_client.get_cases(
+        if testrail_project.test_run is None:
+            # @todo allow to customise the test run name that is created
+            test_run_name = self.branch_name
+            testrail_project.test_run = self._get_testrail_client().create_run(
                 testrail_project.id,
                 testrail_project.suite_id,
+                test_run_name,
             )
-            testrail_project.cases = {str(case['id']): case for case in cases}
+
+    def _load_test_cases_for_project(self, project):
+        cases = self._get_testrail_client().get_cases(
+            project.id,
+            project.suite_id,
+        )
+        project.cases = {str(case['id']): case for case in cases}
+
+    def _get_testrail_client(self):
+        if not self.testrail_client:
+            self.testrail_client = APIClient(
+                base_url=self.config.get('base_url'),
+                username=self.username,
+                password=self.secret_key,
+            )
+
+        return self.testrail_client
+
+    def _add_test_result(self, project, case_id, status, comment='', elapsed='0'):
+        if not project.test_run:
+            self.setup_test_run(project)
+
+        return self._get_testrail_client().create_result(
+            project.test_run['id'],
+            case_id,
+            status=status,
+            comment=comment,
+            elapsed=elapsed
+        )
 
     def process_scenario(self, scenario):
         """
@@ -173,6 +217,8 @@ class TestrailReporter(Reporter):
                 case_id = tag[len(TestrailReporter.CASE_TAG_PREFIX):]
                 # loop through all projects to ensure if test exists on both projects it is pushed
                 for testrail_project in self.projects:
+                    if not testrail_project.cases:
+                        self._load_test_cases_for_project(testrail_project)
                     if case_id in testrail_project.cases:
                         comment = '{}\n'.format(scenario.name)
                         comment += '\n'.join(
@@ -190,15 +236,15 @@ class TestrailReporter(Reporter):
                             self.case_summary[Status.skipped.name] += 1
                             continue
 
-                        was_test_result_added = self.testrail_client.create_result(
-                            testrail_project.test_run['id'],
-                            case_id,
+                        is_added = self._add_test_result(
+                            project=testrail_project,
+                            case_id=case_id,
                             status=testrail_status,
                             comment=comment,
                             elapsed='%ds' % int(scenario.duration)
                         )
-
-                        if was_test_result_added:
+                        print 'was_test_result_added:', is_added
+                        if is_added:
                             self.case_summary[Status.passed.name] += 1
                         else:
                             self.failed_cases.append(case_id)
