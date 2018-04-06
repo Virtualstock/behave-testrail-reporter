@@ -2,6 +2,7 @@ import unittest
 import sys
 import yaml
 import os
+from functools import partial
 
 from mock import Mock
 from behave.model import Scenario
@@ -69,6 +70,7 @@ class TestrailReporterTestLoadConfig(unittest.TestCase):
         self.assertTrue(exception_message in context.exception.args[0])
 
     def test_config_file_is_not_valid_yaml_file(self):
+        self.addCleanup(partial(os.remove, 'testrail.yml'))
         with open('testrail.yml', 'w') as outfile:
             outfile.write('-\n--\n---')
 
@@ -77,4 +79,3 @@ class TestrailReporterTestLoadConfig(unittest.TestCase):
 
         exception_message = 'Error loading testrail.yml file:'
         self.assertTrue(exception_message in context.exception.args[0])
-        os.remove('testrail.yml')
