@@ -221,7 +221,8 @@ class TestrailReporter(Reporter):
             elapsed=elapsed
         )
 
-    def _buid_comment_for_scenario(self, scenario):
+    @classmethod
+    def _buid_comment_for_scenario(cls, scenario):
         comment = '{}\n'.format(scenario.name)
         comment += '\n'.join(
             ['->  {} {} [{}]'.format(step.keyword, step.name, step.status) for step in scenario.steps])
