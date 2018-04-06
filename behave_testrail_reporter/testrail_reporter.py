@@ -221,6 +221,13 @@ class TestrailReporter(Reporter):
             elapsed=elapsed
         )
 
+    def _buid_comment_for_scenario(self, scenario):
+        comment = '{}\n'.format(scenario.name)
+        comment += '\n'.join(
+            ['->  {} {} [{}]'.format(step.keyword, step.name, step.status) for step in scenario.steps])
+
+        return comment
+
     def process_scenario(self, scenario):
         """
         Reports the test results for the given scenario to the testrail run.
@@ -233,10 +240,6 @@ class TestrailReporter(Reporter):
                     if not testrail_project.cases:
                         self._load_test_cases_for_project(testrail_project)
                     if case_id in testrail_project.cases:
-                        comment = '{}\n'.format(scenario.name)
-                        comment += '\n'.join(
-                            ['->  {} {} [{}]'.format(step.keyword, step.name, step.status) for step in scenario.steps])
-
                         testrail_status = TestrailReporter.STATUS_MAPS[scenario.status]
 
                         # When adding a test result untested status is not allowed status
@@ -249,6 +252,7 @@ class TestrailReporter(Reporter):
                             self.case_summary[Status.skipped.name] += 1
                             continue
 
+                        comment = self._buid_comment_for_scenario(scenario)
                         is_added = self._add_test_result(
                             project=testrail_project,
                             case_id=case_id,
