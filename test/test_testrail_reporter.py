@@ -82,3 +82,41 @@ class TestrailReporterTestLoadConfig(unittest.TestCase):
 
         exception_message = 'Error loading testrail.yml file:'
         self.assertTrue(exception_message in context.exception.args[0])
+
+    def test_config_file_is_missing_base_url(self):
+        self.addCleanup(partial(os.remove, 'testrail.yml'))
+        data = {
+            'projects': [
+                {
+                    'name': 'Testrail project name',
+                    'id': 1,
+                    'suite_id': 11,
+                    'allowed_branch_pattern': '*',
+                },
+            ]
+        }
+
+        with open('testrail.yml', 'w') as outfile:
+            yaml.dump(data, outfile, default_flow_style=False)
+
+        with self.assertRaises(Exception) as context:
+            TestrailReporter('master')
+
+        exception_message = 'Invalid testrail.yml file! error: \'base_url\' is a required property'
+        self.assertEquals(exception_message, context.exception.args[0])
+
+    def test_config_file_without_projects(self):
+        self.addCleanup(partial(os.remove, 'testrail.yml'))
+        data = {
+            'base_url': 'https://test.testrail.net',
+            'projects': []
+        }
+
+        with open('testrail.yml', 'w') as outfile:
+            yaml.dump(data, outfile, default_flow_style=False)
+
+        with self.assertRaises(Exception) as context:
+            TestrailReporter('master')
+
+        exception_message = 'Your testrail.yml config file does not have any project configured!'
+        self.assertEquals(exception_message, context.exception.args[0])
