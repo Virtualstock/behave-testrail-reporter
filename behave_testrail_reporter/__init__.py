@@ -1,7 +1,6 @@
 import re
 import os
 import yaml
-import sys
 
 from jsonschema import validate
 from behave.reporter.base import Reporter
@@ -131,7 +130,7 @@ class TestrailReporter(Reporter):
 
         try:
             validate(config, yaml.load(schema))
-        except Exception, exception:
+        except Exception as exception:
             raise Exception(
                 'Invalid testrail.yml file! error: {}'.format(exception.message))
 
@@ -243,7 +242,7 @@ class TestrailReporter(Reporter):
                             comment=comment,
                             elapsed='%ds' % int(scenario.duration)
                         )
-                        print 'was_test_result_added:', is_added
+
                         if is_added:
                             self.case_summary[Status.passed.name] += 1
                         else:
