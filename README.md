@@ -93,6 +93,14 @@ Note: some scenarios can cover multiple TestRail cases, for that you just need t
 tox
 ```
 
+## How to distribute
+
+If you need to publish a new version of this package you can use this command:
+
+```
+python setup.py publish
+```
+
 
 # License
 Licensed under `MIT license`. View [license](LICENSE).

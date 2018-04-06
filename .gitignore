@@ -2,3 +2,6 @@
 .eggs
 .tox
 *.egg-info
+/build
+/dist
+.coverage
