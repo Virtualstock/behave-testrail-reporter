@@ -14,7 +14,7 @@ if sys.argv[-1] == 'publish':
 
 
 requirements = ['jsonschema', 'behave', 'pyyaml', 'requests']
-test_requirements = ['coverage', 'flake8']
+test_requirements = ['coverage', 'flake8', 'mock']
 
 setup(
     name='behave-testrail-reporter',
