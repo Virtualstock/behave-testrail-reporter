@@ -6,8 +6,6 @@ long_description = 'Please see our GitHub README'
 if os.path.exists('README.md'):
     long_description = open('README.md').read()
 
-test_requirements = ['coverage', 'flake8']
-
 # 'setup.py publish' shortcut.
 if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist bdist_wheel')
@@ -15,14 +13,8 @@ if sys.argv[-1] == 'publish':
     sys.exit()
 
 
-def getRequires():
-    deps = ['jsonschema', 'behave', 'pyyaml', 'requests']
-    if sys.version_info < (2, 7):
-        deps.append('unittest2')
-    elif (3, 0) <= sys.version_info < (3, 2):
-        deps.append('unittest2py3k')
-    return deps
-
+requirements = ['jsonschema', 'behave', 'pyyaml', 'requests']
+test_requirements = ['coverage', 'flake8']
 
 setup(
     name='behave-testrail-reporter',
@@ -36,7 +28,7 @@ setup(
     description='Behave library to integrate with Testrail API',
     keywords=['Behave', 'Testrail', 'API', 'Test', 'BDD'],
     long_description=long_description,
-    install_requires=getRequires(),
+    install_requires=requirements,
     classifiers=[
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.3',
