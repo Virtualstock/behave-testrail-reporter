@@ -31,7 +31,7 @@ class APIClient:
         try:
             response.raise_for_status()
         except requests.HTTPError as e:
-            raise APIError('{}\n{}'.format(e.message, str(resp.content)))
+            raise APIError('{}\n{}'.format(e.message, str(response.content)))
         else:
             return response.json()
 
@@ -41,7 +41,7 @@ class APIClient:
         try:
             response.raise_for_status()
         except requests.HTTPError as e:
-            raise APIError('{}\n{}'.format(e.message, str(resp.content)))
+            raise APIError('{}\n{}'.format(e.message, str(response.content)))
         else:
             return response.json()
 
