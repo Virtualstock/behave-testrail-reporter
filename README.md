@@ -1,5 +1,7 @@
 # Behave to TestRail Reporter
 
+Build: [![CircleCI](https://circleci.com/bb/virtualstock/behave-testrail-reporter/tree/master.svg?style=svg&circle-token=360d1d5cbd8ae09d97d5fbff1d4c345d1fd94428)](https://circleci.com/bb/virtualstock/behave-testrail-reporter/tree/master)
+
 This integration is used to add test results to TestRail automatically when Behave tests are executed.
 
 
