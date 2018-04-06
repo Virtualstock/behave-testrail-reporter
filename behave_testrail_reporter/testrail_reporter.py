@@ -99,7 +99,7 @@ class TestrailReporter(Reporter):
         if self.show_failed_cases and self.failed_cases:
             print('\nTestrail test results failed for test cases:\n')
             for case_id in self.failed_cases:
-                print(u'case_id:  %s\n' % (case_id))
+                print(u'case_id:  {}\n'.format(case_id))
             print('\n')
 
         # -- SHOW SUMMARY COUNTS:
