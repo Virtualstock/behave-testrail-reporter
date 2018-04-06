@@ -38,7 +38,10 @@ class TestrailReporterTestCase(unittest.TestCase):
         os.remove('testrail.yml')
 
     def test_load_config(self):
-        TestrailReporter('master')
+        testrail_reporter = TestrailReporter('master')
+        empty_config = {}
+
+        self.assertNotEqual(empty_config, testrail_reporter.config)
 
     def test_build_comment_for_scenario(self):
         testrail_reporter = TestrailReporter('master')
