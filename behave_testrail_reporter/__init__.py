@@ -97,12 +97,15 @@ class TestrailReporter(Reporter):
         print('Took %dm%02.3fs\n' % timings)
 
     def _load_config(self):
-        with open('testrail.yml', 'r') as stream:
-            try:
-                self.config = yaml.load(stream)
-                self._load_projects_from_config(self.config)
-            except yaml.YAMLError as exc:
-                print(exc)
+        try:
+            with open('testrail.yml', 'r') as stream:
+                try:
+                    self.config = yaml.load(stream)
+                    self._load_projects_from_config(self.config)
+                except yaml.YAMLError as exception:
+                    raise Exception('Error loading testrail.yml file: {}'.format(exception))
+        except IOError:
+            raise Exception('Could not read `testrail.yml` file, check the file exists in root of your project.')
         self._validate_config(self.config)
 
     def _validate_config(self, config):
