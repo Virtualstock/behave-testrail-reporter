@@ -86,3 +86,13 @@ Feature: Log in and out
 ```
 
 Note: some scenarios can cover multiple TestRail cases, for that you just need to add multiple tags.
+
+## How to run tests
+
+```
+tox
+```
+
+
+# License
+Licensed under `MIT license`. View [license](LICENSE).
