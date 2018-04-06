@@ -1,8 +1,14 @@
-# Behave to TestRail Integration
+# Behave to TestRail Reporter
 
 This integration is used to add test results to TestRail automatically when Behave tests are executed.
 
-@todo abstract this into a generic package that can be open sourced and moved out of our codebase.
+
+Example of the generated report:
+
+```
+3 testrail test cases passed, 0 failed, 19 skipped, 2 untested
+Took 0m6.349s
+```
 
 
 ## Setup
