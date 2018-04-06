@@ -66,7 +66,7 @@ class TestrailReporterTestLoadConfig(unittest.TestCase):
             TestrailReporter('master')
 
         exception_message = 'Could not read `testrail.yml` file, check the file exists in root of your project.'
-        self.assertTrue(exception_message in context.exception)
+        self.assertTrue(exception_message in context.exception.args[0])
 
     def test_config_file_is_not_valid_yaml_file(self):
         with open('testrail.yml', 'w') as outfile:
@@ -76,5 +76,5 @@ class TestrailReporterTestLoadConfig(unittest.TestCase):
             TestrailReporter('master')
 
         exception_message = 'Error loading testrail.yml file:'
-        self.assertTrue(exception_message in context.exception.message)
+        self.assertTrue(exception_message in context.exception.args[0])
         os.remove('testrail.yml')
