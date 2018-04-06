@@ -8,12 +8,13 @@ pre_commit = "*"
 "e1839a8" = {path = ".", editable = true}
 behave = "*"
 jsonschema = "*"
+PyYAML = "*"
+requests = "*"
 
 [dev-packages]
 tox = "*"
-pytest = "*"
-requests = "*"
-pre-commit = "*"
+pre_commit = "*"
+"flake8" = "*"
 
 [requires]
 python_version = "3.6"

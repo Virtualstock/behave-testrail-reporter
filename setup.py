@@ -6,11 +6,11 @@ long_description = 'Please see our GitHub README'
 if os.path.exists('README.md'):
     long_description = open('README.md').read()
 
-test_requirements = []
+test_requirements = ['coverage', 'flake8']
 
 
 def getRequires():
-    deps = ['jsonschema', 'behave']
+    deps = ['jsonschema', 'behave', 'pyyaml', 'requests']
     if sys.version_info < (2, 7):
         deps.append('unittest2')
     elif (3, 0) <= sys.version_info < (3, 2):
