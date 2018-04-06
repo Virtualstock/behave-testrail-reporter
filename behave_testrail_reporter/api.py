@@ -22,49 +22,54 @@ class APIClient:
         self.session.auth = (self.user, self.password)
         self.session.headers.update({'Content-Type': 'application/json'})
 
+    def _build_endpoint_from_uri(self, uri):
+        return '{base_url}{uri}'.format(base_url=self.url, uri=uri)
+
     def send_get(self, uri):
-        resp = self.session.get(self.url + uri)
+        endpoint = self._build_endpoint_from_uri(uri)
+        response = self.session.get(endpoint)
         try:
-            resp.raise_for_status()
+            response.raise_for_status()
         except requests.HTTPError as e:
-            raise APIError(e.message + '\n' + str(resp.content))
+            raise APIError('{}\n{}'.format(e.message, str(resp.content)))
         else:
-            return resp.json()
+            return response.json()
 
     def send_post(self, uri, data):
-        resp = self.session.post(self.url + uri, json=data)
+        endpoint = self._build_endpoint_from_uri(uri)
+        response = self.session.post(endpoint, json=data)
         try:
-            resp.raise_for_status()
+            response.raise_for_status()
         except requests.HTTPError as e:
-            raise APIError(e.message + '\n' + str(resp.content))
+            raise APIError('{}\n{}'.format(e.message, str(resp.content)))
         else:
-            return resp.json()
+            return response.json()
 
     def create_run(self, project_id, suite_id, name):
-        endpoint = 'add_run/{}'.format(project_id)
+        uri_create_test_run = 'add_run/{}'.format(project_id)
         post_data = {
             'suite_id': suite_id,
             'name': name,
             'include_all': True,
         }
 
-        return self.send_post(endpoint, data=post_data)
+        return self.send_post(uri=uri_create_test_run, data=post_data)
 
     def get_run_for_branch(self, project_id, branch_name):
-        get_runs_endpoint = 'get_runs/{project_id}&is_completed=0'.format(project_id=project_id)
-        test_runs = self.send_get(get_runs_endpoint)
-        for test_run in test_runs:
+        uri_get_project_test_runs = 'get_runs/{project_id}&is_completed=0'.format(project_id=project_id)
+        response = self.send_get(uri=uri_get_project_test_runs)
+        for test_run in response:
             if test_run['name'] == branch_name:
                 return test_run
         return None
 
     def get_cases(self, project_id, suite_id):
-        endpoint = 'get_cases/{project}&suite_id={suite}'.format(project=project_id, suite=suite_id)
+        uri_get_project_cases = 'get_cases/{project}&suite_id={suite}'.format(project=project_id, suite=suite_id)
 
-        return self.send_get(endpoint)
+        return self.send_get(uri=uri_get_project_cases)
 
     def create_result(self, run_id, case_id, status, comment, elapsed, version=None):
-        endpoint = 'add_result_for_case/{run}/{test_case}'.format(run=run_id, test_case=case_id)
+        uri_add_test_result = 'add_result_for_case/{run}/{test_case}'.format(run=run_id, test_case=case_id)
         post_data = {
             'status_id': status,
             'comment': comment,
@@ -72,4 +77,4 @@ class APIClient:
             'elapsed': elapsed,
         }
 
-        return self.send_post(endpoint, data=post_data)
+        return self.send_post(uri=uri_add_test_result, data=post_data)
