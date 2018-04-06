@@ -10,12 +10,27 @@ Example of the generated report:
 Took 0m6.349s
 ```
 
+## Install
+
+Can install it using pipenv
+
+```
+$ pipenv install behave-testrail-reporter
+```
+
+or using pip
+
+```
+$ pip install behave-testrail-reporter
+```
 
 ## Setup
 
 Add `TestrailReporter` to behave reporters in your `/features/environment.py` by adding this code in `before_all()`
 
 ```python
+from behave_testrail_reporter import TestrailReporter
+
 def before_all(context):
     # ... all your other awesome code in here
     current_branch = os.environ.get('CIRCLE_BRANCH') # Change this to get the current build branch of your CI system
