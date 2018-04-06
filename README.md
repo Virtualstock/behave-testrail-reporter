@@ -113,7 +113,8 @@ tox
 If you need to publish a new version of this package you can use this command:
 
 ```
-python setup.py publish
+python setup.py sdist bdist_wheel
+twine upload dist/*
 ```
 
 

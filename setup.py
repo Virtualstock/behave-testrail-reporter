@@ -6,15 +6,8 @@ long_description = 'Please see our GitHub README'
 if os.path.exists('README.md'):
     long_description = open('README.md').read()
 
-# 'setup.py publish' shortcut.
-if sys.argv[-1] == 'publish':
-    os.system('python setup.py sdist bdist_wheel')
-    os.system('twine upload dist/*')
-    sys.exit()
-
-
 requirements = ['jsonschema', 'behave', 'pyyaml', 'requests']
-test_requirements = ['coverage', 'flake8', 'mock']
+test_requirements = ['coverage', 'flake8', 'mock', 'twine']
 
 setup(
     name='behave-testrail-reporter',

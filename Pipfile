@@ -14,6 +14,7 @@ tox = "*"
 pre_commit = "*"
 "flake8" = "*"
 mock = "*"
+twine = "*"
 
 [requires]
 python_version = "2.7"
