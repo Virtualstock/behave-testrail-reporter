@@ -1,8 +1,9 @@
 # Behave to TestRail Reporter
 
-Build: [![CircleCI](https://circleci.com/bb/virtualstock/behave-testrail-reporter/tree/master.svg?style=svg&circle-token=360d1d5cbd8ae09d97d5fbff1d4c345d1fd94428)](https://circleci.com/bb/virtualstock/behave-testrail-reporter/tree/master)
-[![Codacy grade](https://img.shields.io/codacy/grade/469f2b5c86974f4c8147b0fabbd25c34.svg?style=plastic)](https://app.codacy.com/app/BernardoSilva/behave-testrail-reporter/dashboard)
 
+[![CircleCI branch](https://img.shields.io/circleci/project/github/VirtualStock/behave-testrail-reporter/master.svg?style=flat)](https://circleci.com/bb/virtualstock/behave-testrail-reporter/tree/master)
+[![Codacy grade](https://img.shields.io/codacy/grade/469f2b5c86974f4c8147b0fabbd25c34.svg?style=flat)](https://app.codacy.com/app/BernardoSilva/behave-testrail-reporter/dashboard)
+[![Codacy branch coverage](https://img.shields.io/codacy/coverage/469f2b5c86974f4c8147b0fabbd25c34/master.svg?style=flat)](https://app.codacy.com/app/BernardoSilva/behave-testrail-reporter/files)
 
 This integration is used to add test results to TestRail automatically when Behave tests are executed.
 
