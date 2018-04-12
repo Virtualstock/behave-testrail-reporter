@@ -7,7 +7,7 @@ if os.path.exists('README.md'):
     long_description = open('README.md').read()
 
 requirements = ['jsonschema', 'behave', 'pyyaml', 'requests']
-test_requirements = ['coverage', 'flake8', 'mock', 'twine']
+test_requirements = ['coverage', 'flake8', 'mock', 'twine', 'codacy-coverage']
 
 setup(
     name='behave-testrail-reporter',
