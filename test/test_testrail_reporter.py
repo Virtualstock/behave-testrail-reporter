@@ -70,6 +70,13 @@ class TestrailReporterTestCase(unittest.TestCase):
 
         self.assertEquals('69s', formatted_duration)
 
+    def test_format_duration_return_one_for_zero_durations(self):
+        testrail_reporter = TestrailReporter('master')
+        duration = 0
+        formatted_duration = testrail_reporter._format_duration(duration)
+
+        self.assertEquals('1s', formatted_duration)
+
 
 class TestrailReporterTestLoadConfig(unittest.TestCase):
     def test_config_file_is_not_present(self):
