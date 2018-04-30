@@ -111,7 +111,7 @@ class TestrailReporter(Reporter):
         try:
             with open('testrail.yml', 'r') as stream:
                 try:
-                    self.config = yaml.load(stream)
+                    self.config = yaml.safe_load(stream)
                     self._load_projects_from_config(self.config)
                 except yaml.YAMLError as exception:
                     raise Exception('Error loading testrail.yml file: {}'.format(exception))
@@ -143,7 +143,7 @@ class TestrailReporter(Reporter):
         """
 
         try:
-            validate(config, yaml.load(schema))
+            validate(config, yaml.safe_load(schema))
         except Exception as exception:
             raise Exception(
                 'Invalid testrail.yml file! error: {}'.format(exception.message))
