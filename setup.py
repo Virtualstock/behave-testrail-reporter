@@ -21,6 +21,7 @@ setup(
     description='Behave library to integrate with Testrail API',
     keywords=['Behave', 'Testrail', 'API', 'Test', 'BDD'],
     long_description=long_description,
+    long_description_content_type='text/markdown',
     install_requires=requirements,
     classifiers=[
         'Programming Language :: Python :: 2.7',
