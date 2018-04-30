@@ -63,6 +63,13 @@ class TestrailReporterTestCase(unittest.TestCase):
             '->  given step_02 [passed]')
         self.assertEqual(expected_comment, comment)
 
+    def test_format_duration(self):
+        testrail_reporter = TestrailReporter('master')
+        duration = 69
+        formatted_duration = testrail_reporter._format_duration(duration)
+
+        self.assertEquals('69s', formatted_duration)
+
 
 class TestrailReporterTestLoadConfig(unittest.TestCase):
     def test_config_file_is_not_present(self):
