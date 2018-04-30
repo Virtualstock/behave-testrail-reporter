@@ -209,7 +209,7 @@ class TestrailReporter(Reporter):
 
         return self.testrail_client
 
-    def _add_test_result(self, project, case_id, status, comment='', elapsed='0'):
+    def _add_test_result(self, project, case_id, status, comment='', elapsed='1'):
         if not project.test_run:
             self.setup_test_run(project)
 
