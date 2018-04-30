@@ -1,3 +1,5 @@
+import textwrap
+
 import requests
 
 
@@ -41,7 +43,19 @@ class APIClient:
         try:
             response.raise_for_status()
         except requests.HTTPError as e:
-            raise APIError('{}\n{}'.format(e.message, str(response.content)))
+            error_template = textwrap.dedent('''
+                Error ({error}) during POST to endpoint: ({endpoint})
+                With data: {data}
+                Response Content: {response_content}
+            ''')
+            error_message = error_template.format(
+                error=e.message,
+                endpoint=uri,
+                data=data,
+                response_content=response.content,
+            )
+
+            raise APIError(error_message)
         else:
             return response.json()
 
