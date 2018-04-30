@@ -229,6 +229,17 @@ class TestrailReporter(Reporter):
 
         return comment
 
+    @classmethod
+    def _format_duration(cls, duration):
+        """
+        This function ensure the minimum duration is 1s to prevent Testrail API error:
+            Field :elapsed is not in a valid time span format.
+        Returns a string formatted as (duration_in_seconds + 's')
+        """
+        duration_seconds = max(1, int(duration))
+
+        return '{duration_seconds}s'.format(duration_seconds=duration_seconds)
+
     def process_scenario(self, scenario):
         """
         Reports the test results for the given scenario to the testrail run.
