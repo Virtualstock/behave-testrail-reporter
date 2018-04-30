@@ -33,7 +33,16 @@ class APIClient:
         try:
             response.raise_for_status()
         except requests.HTTPError as e:
-            raise APIError('{}\n{}'.format(e.message, str(response.content)))
+            error_template = textwrap.dedent('''
+                            Error ({error}) during GET to endpoint: ({endpoint})
+                            Response Content: {response_content}
+                        ''')
+            error_message = error_template.format(
+                error=e.message,
+                endpoint=uri,
+                response_content=response.content,
+            )
+            raise APIError(error_message)
         else:
             return response.json()
 
