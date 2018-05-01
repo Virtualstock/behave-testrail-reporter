@@ -270,7 +270,7 @@ class TestrailReporter(Reporter):
                             case_id=case_id,
                             status=testrail_status,
                             comment=comment,
-                            elapsed=scenario.duration,
+                            elapsed_seconds=scenario.duration,
                         )
 
                         if is_added:
