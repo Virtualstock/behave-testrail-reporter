@@ -223,16 +223,14 @@ class TestrailReporter(Reporter):
             elapsed=elapsed_seconds_formatted,
         )
 
-    @classmethod
-    def _buid_comment_for_scenario(cls, scenario):
+    def _buid_comment_for_scenario(self, scenario):
         comment = '{}\n'.format(scenario.name)
         comment += '\n'.join(
             ['->  {} {} [{}]'.format(step.keyword, step.name, step.status) for step in scenario.steps])
 
         return comment
 
-    @classmethod
-    def _format_duration(cls, duration):
+    def _format_duration(self, duration):
         """
         This function ensure the minimum duration is 1s to prevent Testrail API error:
             Field :elapsed is not in a valid time span format.
