@@ -209,25 +209,36 @@ class TestrailReporter(Reporter):
 
         return self.testrail_client
 
-    def _add_test_result(self, project, case_id, status, comment='', elapsed='0'):
+    def _add_test_result(self, project, case_id, status, comment='', elapsed_seconds=1):
         if not project.test_run:
             self.setup_test_run(project)
+
+        elapsed_seconds_formatted = self._format_duration(elapsed_seconds)
 
         return self._get_testrail_client().create_result(
             project.test_run['id'],
             case_id,
             status=status,
             comment=comment,
-            elapsed=elapsed
+            elapsed=elapsed_seconds_formatted,
         )
 
-    @classmethod
-    def _buid_comment_for_scenario(cls, scenario):
+    def _buid_comment_for_scenario(self, scenario):
         comment = '{}\n'.format(scenario.name)
         comment += '\n'.join(
             ['->  {} {} [{}]'.format(step.keyword, step.name, step.status) for step in scenario.steps])
 
         return comment
+
+    def _format_duration(self, duration):
+        """
+        This function ensure the minimum duration is 1s to prevent Testrail API error:
+            Field :elapsed is not in a valid time span format.
+        Returns a string formatted as (duration_in_seconds + 's')
+        """
+        duration_seconds = max(1, int(duration))
+
+        return '{duration_seconds}s'.format(duration_seconds=duration_seconds)
 
     def process_scenario(self, scenario):
         """
@@ -259,7 +270,7 @@ class TestrailReporter(Reporter):
                             case_id=case_id,
                             status=testrail_status,
                             comment=comment,
-                            elapsed='%ds' % int(scenario.duration)
+                            elapsed_seconds=scenario.duration,
                         )
 
                         if is_added:
