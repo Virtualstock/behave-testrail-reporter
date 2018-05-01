@@ -209,18 +209,18 @@ class TestrailReporter(Reporter):
 
         return self.testrail_client
 
-    def _add_test_result(self, project, case_id, status, comment='', elapsed='1'):
+    def _add_test_result(self, project, case_id, status, comment='', elapsed_seconds=1):
         if not project.test_run:
             self.setup_test_run(project)
 
-        elapsed_time_formatted = self._format_duration(elapsed)
+        elapsed_seconds_formatted = self._format_duration(elapsed_seconds)
 
         return self._get_testrail_client().create_result(
             project.test_run['id'],
             case_id,
             status=status,
             comment=comment,
-            elapsed=elapsed_time_formatted,
+            elapsed=elapsed_seconds_formatted,
         )
 
     @classmethod
