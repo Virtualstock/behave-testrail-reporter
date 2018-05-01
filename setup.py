@@ -11,7 +11,7 @@ test_requirements = ['coverage', 'flake8', 'mock', 'twine', 'codacy-coverage']
 
 setup(
     name='behave-testrail-reporter',
-    version='0.0.2',
+    version='0.1.0',
     author='Virtualstock',
     author_email='development.team@virtualstock.co.uk',
     url='https://github.com/virtualstock/behave-testrail-reporter/',
