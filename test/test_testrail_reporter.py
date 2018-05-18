@@ -63,6 +63,23 @@ class TestrailReporterTestCase(unittest.TestCase):
             u'->  given step_02 [passed]')
         self.assertEqual(expected_comment, comment)
 
+    def test_build_comment_for_scenario_with_utf8_string(self):
+        testrail_reporter = TestrailReporter(u'master')
+
+        step_01 = Mock(status=u'passed', keyword=u'given')
+        step_01.name = u'step_01 £'
+
+        steps = [step_01]
+
+        mock_scenario = Mock(Scenario)
+        mock_scenario.name = u'Dummy scenario'
+        mock_scenario.steps = steps
+        comment = testrail_reporter._buid_comment_for_scenario(mock_scenario)
+        expected_comment = (
+            u'Dummy scenario\n'
+            u'->  given step_01 £ [passed]')
+        self.assertEqual(expected_comment, comment)
+
     def test_format_duration(self):
         testrail_reporter = TestrailReporter(u'master')
         duration = 69
