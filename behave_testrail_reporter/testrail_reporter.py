@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import re
 import os
 import yaml
@@ -28,12 +30,12 @@ def format_summary(statement_type, summary):
             # -- FIRST ITEM: Add statement_type to counter.
             label = statement_type
             if counts != 1:
-                label += 's'
+                label += u's'
             part = u'%d %s %s' % (counts, label, status.name)
         else:
             part = u'%d %s' % (counts, status.name)
         parts.append(part)
-    return ', '.join(parts)
+    return u', '.join(parts)
 
 
 class TestrailProject(object):
@@ -55,23 +57,23 @@ class TestrailReporter(Reporter):
     STATUS_FAILED = 5
     show_failed_cases = True
 
-    CASE_TAG_PREFIX = 'testrail-C'
+    CASE_TAG_PREFIX = u'testrail-C'
 
     # map Behave to Testrail test result status
     STATUS_MAPS = {
-        'passed': STATUS_PASSED,
-        'failed': STATUS_FAILED,
-        'skipped': STATUS_UNTESTED,
-        'undefined': STATUS_UNTESTED,
-        'executing': STATUS_UNTESTED,
-        'untested': STATUS_UNTESTED,
+        u'passed': STATUS_PASSED,
+        u'failed': STATUS_FAILED,
+        u'skipped': STATUS_UNTESTED,
+        u'undefined': STATUS_UNTESTED,
+        u'executing': STATUS_UNTESTED,
+        u'untested': STATUS_UNTESTED,
     }
 
     def __init__(self, branch_name):
         self.config = {}
         self.projects = []
-        self.username = os.environ.get('TESTRAIL_USER')
-        self.secret_key = os.environ.get('TESTRAIL_KEY')
+        self.username = os.environ.get(u'TESTRAIL_USER')
+        self.secret_key = os.environ.get(u'TESTRAIL_KEY')
         # @todo ensure username and secret_key are set
         # @todo ensure project_id and suite_id are set
         self.branch_name = branch_name
@@ -97,26 +99,26 @@ class TestrailReporter(Reporter):
 
     def end(self):
         if self.show_failed_cases and self.failed_cases:
-            print('\nTestrail test results failed for test cases:\n')
+            print(u'\nTestrail test results failed for test cases:\n')
             for case_id in self.failed_cases:
                 print(u'case_id:  {}\n'.format(case_id))
-            print('\n')
+            print(u'\n')
 
         # -- SHOW SUMMARY COUNTS:
-        print(format_summary('testrail test case', self.case_summary))
+        print(format_summary(u'testrail test case', self.case_summary))
         timings = (int(self.duration / 60.0), self.duration % 60)
-        print('Took %dm%02.3fs\n' % timings)
+        print(u'Took %dm%02.3fs\n' % timings)
 
     def _load_config(self):
         try:
-            with open('testrail.yml', 'r') as stream:
+            with open(u'testrail.yml', u'r') as stream:
                 try:
                     self.config = yaml.safe_load(stream)
                     self._load_projects_from_config(self.config)
                 except yaml.YAMLError as exception:
-                    raise Exception('Error loading testrail.yml file: {}'.format(exception))
+                    raise Exception(u'Error loading testrail.yml file: {}'.format(exception))
         except IOError:
-            raise Exception('Could not read `testrail.yml` file, check the file exists in root of your project.')
+            raise Exception(u'Could not read `testrail.yml` file, check the file exists in root of your project.')
         self._validate_config(self.config)
 
     def _validate_config(self, config):
@@ -146,21 +148,21 @@ class TestrailReporter(Reporter):
             validate(config, yaml.safe_load(schema))
         except Exception as exception:
             raise Exception(
-                'Invalid testrail.yml file! error: {}'.format(exception.message))
+                u'Invalid testrail.yml file! error: {}'.format(exception.message))
 
     def _load_projects_from_config(self, config):
         projects_config = config.get('projects', [])
         if len(projects_config) is 0:
             raise Exception(
-                'Your testrail.yml config file does not have any project configured!')
+                u'Your testrail.yml config file does not have any project configured!')
 
         for project_config in projects_config:
             testrail_project = TestrailProject(
-                id=project_config.get('id'),
-                name=project_config.get('name'),
-                suite_id=project_config.get('suite_id'),
+                id=project_config.get(u'id'),
+                name=project_config.get(u'name'),
+                suite_id=project_config.get(u'suite_id'),
                 allowed_branch_pattern=project_config.get(
-                    'allowed_branch_pattern')
+                    u'allowed_branch_pattern')
             )
             self.projects.append(testrail_project)
 
@@ -197,26 +199,26 @@ class TestrailReporter(Reporter):
             project.id,
             project.suite_id,
         )
-        project.cases = {str(case['id']): case for case in cases}
+        project.cases = {str(case[u'id']): case for case in cases}
 
     def _get_testrail_client(self):
         if not self.testrail_client:
             self.testrail_client = APIClient(
-                base_url=self.config.get('base_url'),
+                base_url=self.config.get(u'base_url'),
                 username=self.username,
                 password=self.secret_key,
             )
 
         return self.testrail_client
 
-    def _add_test_result(self, project, case_id, status, comment='', elapsed_seconds=1):
+    def _add_test_result(self, project, case_id, status, comment=u'', elapsed_seconds=1):
         if not project.test_run:
             self.setup_test_run(project)
 
         elapsed_seconds_formatted = self._format_duration(elapsed_seconds)
 
         return self._get_testrail_client().create_result(
-            project.test_run['id'],
+            project.test_run[u'id'],
             case_id,
             status=status,
             comment=comment,
@@ -224,9 +226,9 @@ class TestrailReporter(Reporter):
         )
 
     def _buid_comment_for_scenario(self, scenario):
-        comment = '{}\n'.format(scenario.name)
-        comment += '\n'.join(
-            ['->  {} {} [{}]'.format(step.keyword, step.name, step.status) for step in scenario.steps])
+        comment = u'{}\n'.format(scenario.name)
+        comment += u'\n'.join(
+            [u'->  {} {} [{}]'.format(step.keyword, step.name, step.status) for step in scenario.steps])
 
         return comment
 
@@ -238,7 +240,7 @@ class TestrailReporter(Reporter):
         """
         duration_seconds = max(1, int(duration))
 
-        return '{duration_seconds}s'.format(duration_seconds=duration_seconds)
+        return u'{duration_seconds}s'.format(duration_seconds=duration_seconds)
 
     def process_scenario(self, scenario):
         """
