@@ -39,17 +39,16 @@ def format_summary(statement_type, summary):
 
 
 class TestrailProject(object):
-    def __init__(self, id, name, suite_id, allowed_branch_pattern='*', name_pattern='{branch}'):
+    def __init__(self, id, name, suite_id, allowed_branch_pattern='*'):
         self.id = id
         self.name = name
         self.suite_id = suite_id
         self.allowed_branch_pattern = allowed_branch_pattern
         self.test_run = None
         self.cases = {}
-        self.test_run_name_pattern = name_pattern
 
     def get_test_run_name(self, branch_name):
-        return self.test_run_name_pattern.format(
+        return self.name.format(
             project_id=self.id,
             suite_id=self.suite_id,
             name=self.name,

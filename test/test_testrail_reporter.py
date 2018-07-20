@@ -10,7 +10,7 @@ from mock import Mock
 from behave.model import Scenario
 
 from behave_testrail_reporter.api import APIClient
-from behave_testrail_reporter import TestrailReporter
+from behave_testrail_reporter import TestrailReporter, TestrailProject
 
 
 class TestrailReporterTestCase(unittest.TestCase):
@@ -153,3 +153,35 @@ class TestrailReporterTestLoadConfig(unittest.TestCase):
 
         exception_message = u'Your testrail.yml config file does not have any project configured!'
         self.assertEquals(exception_message, context.exception.args[0])
+
+
+class TestrailProjectTestCase(unittest.TestCase):
+    def test_get_test_run_name_default(self):
+        project = TestrailProject(1, u'master', 3)
+        test_run_name = project.get_test_run_name(branch_name=u'master')
+
+        self.assertEquals(u'master', test_run_name)
+
+    def test_get_test_run_name_branch(self):
+        project = TestrailProject(1, u'My Test Suite {branch}', 3, u'')
+        test_run_name = project.get_test_run_name(branch_name=u'master')
+
+        self.assertEquals(u'My Test Suite master', test_run_name)
+
+    def test_get_test_run_name_project_id(self):
+        project = TestrailProject(1, u'My Test Suite {project_id}', 3)
+        test_run_name = project.get_test_run_name(branch_name=u'master')
+
+        self.assertEquals(u'My Test Suite 1', test_run_name)
+
+    def test_get_test_run_name_suite_id(self):
+        project = TestrailProject(1, u'My Test Suite {suite_id}', 3)
+        test_run_name = project.get_test_run_name(branch_name=u'master')
+
+        self.assertEquals(u'My Test Suite 3', test_run_name)
+
+    def test_get_test_run_name_combined_vars(self):
+        project = TestrailProject(1, u'My Test Suite {branch} {project_id} {suite_id}', 3)
+        test_run_name = project.get_test_run_name(branch_name=u'master')
+
+        self.assertEquals(u'My Test Suite master 1 3', test_run_name)
