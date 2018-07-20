@@ -69,11 +69,11 @@ class APIClient:
         else:
             return response.json()
 
-    def create_run(self, project_id, suite_id, name):
+    def create_run(self, project_id, suite_id, test_run_name):
         uri_create_test_run = u'add_run/{}'.format(project_id)
         post_data = {
             u'suite_id': suite_id,
-            u'name': name,
+            u'name': test_run_name,
             u'include_all': True,
         }
 
