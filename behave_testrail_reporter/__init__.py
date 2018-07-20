@@ -1,1 +1,1 @@
-from .testrail_reporter import TestrailReporter  # noqa: F401
+from .testrail_reporter import TestrailReporter, TestrailProject  # noqa: F401
