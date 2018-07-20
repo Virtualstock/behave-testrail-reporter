@@ -51,7 +51,6 @@ class TestrailProject(object):
         return self.name.format(
             project_id=self.id,
             suite_id=self.suite_id,
-            name=self.name,
             branch=branch_name)
 
 
