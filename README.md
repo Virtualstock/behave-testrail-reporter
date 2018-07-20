@@ -72,7 +72,7 @@ projects:
 | ------------ | ----------------------- | --------------- |
 | {project_id} | 'Test run {project_id}' | Test run 123    |
 | {suite_id}   | 'Test run {suite_id}'   | Test run 456    |
-| {branch}     | 'Test run {suite_id}'   | Test run master |
+| {branch}     | 'Test run {branch}'     | Test run master |
 
 
 **Environment variables required**
