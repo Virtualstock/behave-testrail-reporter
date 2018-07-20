@@ -53,9 +53,9 @@ Example structure:
 ```yaml
 projects:
   -
-    name: 'Project Name'
+    name: 'Test run {branch}'
     id: 123
-    suite_id: 123
+    suite_id: 456
     allowed_branch_pattern: '^(master|release\/\d+([\.\d]+)?)$'
 ```
 
@@ -65,6 +65,14 @@ projects:
 | id                     | Testrail project id                                        |  
 | suite_id               | Testrail Suite id                                          |  
 | allowed_branch_pattern | Regular expression to restrict when a test run is executed |  
+
+**name** - You can use some project variables to create dynamic test run names
+
+| Variable     | Example                 | Result          |
+| ------------ | ----------------------- | --------------- |
+| {project_id} | 'Test run {project_id}' | Test run 123    |
+| {suite_id}   | 'Test run {suite_id}'   | Test run 456    |
+| {branch}     | 'Test run {suite_id}'   | Test run master |
 
 
 **Environment variables required**

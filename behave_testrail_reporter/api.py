@@ -69,21 +69,21 @@ class APIClient:
         else:
             return response.json()
 
-    def create_run(self, project_id, suite_id, name):
+    def create_run(self, project_id, suite_id, test_run_name):
         uri_create_test_run = u'add_run/{}'.format(project_id)
         post_data = {
             u'suite_id': suite_id,
-            u'name': name,
+            u'name': test_run_name,
             u'include_all': True,
         }
 
         return self.send_post(uri=uri_create_test_run, data=post_data)
 
-    def get_run_for_branch(self, project_id, branch_name):
+    def get_test_run_by_project_and_name(self, project_id, test_run_name):
         uri_get_project_test_runs = u'get_runs/{project_id}&is_completed=0'.format(project_id=project_id)
         response = self.send_get(uri=uri_get_project_test_runs)
         for test_run in response:
-            if test_run[u'name'] == branch_name:
+            if test_run[u'name'] == test_run_name:
                 return test_run
         return None
 

@@ -39,14 +39,19 @@ def format_summary(statement_type, summary):
 
 
 class TestrailProject(object):
-    def __init__(self, id, name, suite_id, test_run_name='', allowed_branch_pattern='*'):
+    def __init__(self, id, name, suite_id, allowed_branch_pattern='*'):
         self.id = id
         self.name = name
         self.suite_id = suite_id
-        self.test_run_name = test_run_name
         self.allowed_branch_pattern = allowed_branch_pattern
         self.test_run = None
         self.cases = {}
+
+    def get_test_run_name(self, branch_name):
+        return self.name.format(
+            project_id=self.id,
+            suite_id=self.suite_id,
+            branch=branch_name)
 
 
 class TestrailReporter(Reporter):
@@ -180,14 +185,13 @@ class TestrailReporter(Reporter):
         """
         Sets up the testrail run for testrail_project.
         """
-        testrail_project.test_run = self._get_testrail_client().get_run_for_branch(
-            testrail_project.id,
-            self.branch_name
+        test_run_name = testrail_project.get_test_run_name(branch_name=self.branch_name)
+        testrail_project.test_run = self._get_testrail_client().get_test_run_by_project_and_name(
+            project_id=testrail_project.id,
+            test_run_name=test_run_name
         )
 
         if testrail_project.test_run is None:
-            # @todo allow to customise the test run name that is created
-            test_run_name = self.branch_name
             testrail_project.test_run = self._get_testrail_client().create_run(
                 testrail_project.id,
                 testrail_project.suite_id,
