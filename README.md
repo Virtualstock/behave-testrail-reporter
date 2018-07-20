@@ -53,7 +53,7 @@ Example structure:
 ```yaml
 projects:
   -
-    name: 'Test run {master}'
+    name: 'Test run {branch}'
     id: 123
     suite_id: 456
     allowed_branch_pattern: '^(master|release\/\d+([\.\d]+)?)$'
