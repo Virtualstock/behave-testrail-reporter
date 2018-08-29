@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.3.1] - 2018-08-29
+### Changed
+- Fix TypeError: unhashable type using `Status` enum.
+
 ## [0.3.0] - 2018-07-20
 ### Changed
 - You can now customise the test run name using a few variables.
