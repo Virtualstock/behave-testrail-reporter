@@ -1,9 +1,9 @@
 # Behave to TestRail Reporter
 
 
-[![CircleCI branch](https://img.shields.io/circleci/project/github/VirtualStock/behave-testrail-reporter/master.svg?style=flat)](https://circleci.com/bb/virtualstock/behave-testrail-reporter/tree/master)
-[![Codacy grade](https://img.shields.io/codacy/grade/469f2b5c86974f4c8147b0fabbd25c34.svg?style=flat)](https://app.codacy.com/app/BernardoSilva/behave-testrail-reporter/dashboard)
-[![Codacy branch coverage](https://img.shields.io/codacy/coverage/469f2b5c86974f4c8147b0fabbd25c34/master.svg?style=flat)](https://app.codacy.com/app/BernardoSilva/behave-testrail-reporter/files)
+[![CircleCI](https://circleci.com/gh/Virtualstock/behave-testrail-reporter.svg?style=svg)](https://circleci.com/gh/Virtualstock/behave-testrail-reporter)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/469f2b5c86974f4c8147b0fabbd25c34)](https://www.codacy.com/app/BernardoSilva/behave-testrail-reporter?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=VirtualStock/behave-testrail-reporter&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/469f2b5c86974f4c8147b0fabbd25c34)](https://www.codacy.com/app/BernardoSilva/behave-testrail-reporter?utm_source=github.com&utm_medium=referral&utm_content=VirtualStock/behave-testrail-reporter&utm_campaign=Badge_Coverage)
 
 This integration is used to add test results to TestRail automatically when Behave tests are executed.
 
