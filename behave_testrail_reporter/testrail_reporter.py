@@ -258,7 +258,7 @@ class TestrailReporter(Reporter):
                     if not testrail_project.cases:
                         self._load_test_cases_for_project(testrail_project)
                     if case_id in testrail_project.cases:
-                        testrail_status = TestrailReporter.STATUS_MAPS[scenario.status]
+                        testrail_status = TestrailReporter.STATUS_MAPS[scenario.status.name]
 
                         # When adding a test result untested status is not allowed status
                         # @see http://docs.gurock.com/testrail-api2/reference-results#add_result
