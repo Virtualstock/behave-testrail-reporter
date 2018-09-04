@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-
+import os
 import textwrap
+
 import requests
 
 
@@ -15,15 +16,23 @@ class APIClient:
     with additional abstractions for certain operations.
     """
 
-    def __init__(self, base_url, username, password):
-        self.user = username
-        self.password = password
+    def __init__(self, base_url):
+        self.user = os.environ.get(u'TESTRAIL_USER')
+        self.password = os.environ.get(u'TESTRAIL_KEY')
+
         if not base_url.endswith(u'/'):
             base_url += u'/'
         self.url = base_url + u'index.php?/api/v2/'
         self.session = requests.Session()
         self.session.auth = (self.user, self.password)
         self.session.headers.update({u'Content-Type': u'application/json'})
+
+        if not self.user or not self.password:
+            raise ValueError(
+                u'Environment variables to authenticate on Testrail API are not defined!\n'
+                u'Please define those environment variables: \n'
+                u'TESTRAIL_USER and TESTRAIL_KEY'
+            )
 
     def _build_endpoint_from_uri(self, uri):
         return u'{base_url}{uri}'.format(base_url=self.url, uri=uri)
