@@ -322,6 +322,13 @@
             "markers": "python_version < '3.4'",
             "version": "==1.1.6"
         },
+        "filelock": {
+            "hashes": [
+                "sha256:86fe6af56ae08ebc9c66d54ba3398c35b98916d0862d782b276a65816ff39392",
+                "sha256:97694f181bdf58f213cca0a7cb556dc7bf90e2f8eb9aa3151260adac56701afb"
+            ],
+            "version": "==3.0.9"
+        },
         "flake8": {
             "hashes": [
                 "sha256:7253265f7abd8b313e3892944044a365e3f4ac3fcdcfb4298f55ee9ddf188ba0",
@@ -497,11 +504,11 @@
         },
         "tox": {
             "hashes": [
-                "sha256:7f802b37fffd3b5ef2aab104943fa5dad24bf9564bb7e732e54b8d0cfec2fca0",
-                "sha256:cc97859bd7f38aa5b3b8ba55ffe7ee9952e7050faad1aedc0829cd3db2fb61d6"
+                "sha256:217fb84aecf9792a98f93f07cfcaf014205a76c64e52bd7c2b4135458e6ad2a1",
+                "sha256:4baeb3d8ebdcd9f43afce38aa67d06f1165a87d221d5bb21e8b39a0d4880c134"
             ],
             "index": "pypi",
-            "version": "==3.4.0"
+            "version": "==3.5.2"
         },
         "tqdm": {
             "hashes": [
