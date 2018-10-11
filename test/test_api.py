@@ -12,9 +12,8 @@ class APIClientTestCase(unittest.TestCase):
         with self.assertRaises(ValueError) as context:
             APIClient(base_url='index.php/')
 
-        self.assertTrue(
-            'Environment variables to authenticate on Testrail API are not defined!' in str(context.exception)
-        )
+        expected_message = u'Environment variables to authenticate on Testrail API are not defined!'
+        self.assertTrue(expected_message in str(context.exception))
 
     def test_env_variables_user_not_present(self):
         test_environment = {u'TESTRAIL_USER': u'', u'TESTRAIL_KEY': u'simpson123'}
