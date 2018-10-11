@@ -39,5 +39,5 @@ class APIClientTestCase(unittest.TestCase):
 
         api_client = APIClient(base_url='index.php/')
 
-        self.assertEquals(u'homer@springfield.test', api_client.user)
-        self.assertEquals(u'simpson123', api_client.password)
+        self.assertEqual(u'homer@springfield.test', api_client.user)
+        self.assertEqual(u'simpson123', api_client.password)
