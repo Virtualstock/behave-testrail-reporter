@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import re
-import os
 import yaml
 
 from jsonschema import validate
@@ -77,10 +76,6 @@ class TestrailReporter(Reporter):
     def __init__(self, branch_name):
         self.config = {}
         self.projects = []
-        self.username = os.environ.get(u'TESTRAIL_USER')
-        self.secret_key = os.environ.get(u'TESTRAIL_KEY')
-        # @todo ensure username and secret_key are set
-        # @todo ensure project_id and suite_id are set
         self.branch_name = branch_name
         self.testrail_client = None
         self.testrail_run = None
@@ -207,11 +202,7 @@ class TestrailReporter(Reporter):
 
     def _get_testrail_client(self):
         if not self.testrail_client:
-            self.testrail_client = APIClient(
-                base_url=self.config.get(u'base_url'),
-                username=self.username,
-                password=self.secret_key,
-            )
+            self.testrail_client = APIClient(base_url=self.config.get(u'base_url'))
 
         return self.testrail_client
 
