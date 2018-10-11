@@ -10,3 +10,6 @@
 # multiple time (only on the command line, not in the configuration file where
 # it should appear only once).
 disable=R0201
+
+[FORMAT]
+max-line-length=120
