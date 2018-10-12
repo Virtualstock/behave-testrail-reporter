@@ -87,14 +87,14 @@ class TestrailReporterTestCase(unittest.TestCase):
         duration = 69
         formatted_duration = testrail_reporter._format_duration(duration)
 
-        self.assertEquals(u'69s', formatted_duration)
+        self.assertEqual(u'69s', formatted_duration)
 
     def test_format_duration_return_one_for_zero_durations(self):
         testrail_reporter = TestrailReporter(u'master')
         duration = 0
         formatted_duration = testrail_reporter._format_duration(duration)
 
-        self.assertEquals(u'1s', formatted_duration)
+        self.assertEqual(u'1s', formatted_duration)
 
     @mock.patch('behave_testrail_reporter.TestrailReporter._add_test_result')
     @mock.patch('behave_testrail_reporter.api.APIClient.send_post')
@@ -136,27 +136,27 @@ class TestrailReporterTestCase(unittest.TestCase):
 
     def test_status_map_passed(self):
         expected_status = TestrailReporter.STATUS_MAPS[u'passed']
-        self.assertEquals(expected_status, TestrailReporter.STATUS_MAPS[Status.passed.name])
+        self.assertEqual(expected_status, TestrailReporter.STATUS_MAPS[Status.passed.name])
 
     def test_status_map_failed(self):
         expected_status = TestrailReporter.STATUS_MAPS[u'failed']
-        self.assertEquals(expected_status, TestrailReporter.STATUS_MAPS[Status.failed.name])
+        self.assertEqual(expected_status, TestrailReporter.STATUS_MAPS[Status.failed.name])
 
     def test_status_map_skipped(self):
         expected_status = TestrailReporter.STATUS_MAPS[u'skipped']
-        self.assertEquals(expected_status, TestrailReporter.STATUS_MAPS[Status.skipped.name])
+        self.assertEqual(expected_status, TestrailReporter.STATUS_MAPS[Status.skipped.name])
 
     def test_status_map_undefined(self):
         expected_status = TestrailReporter.STATUS_MAPS[u'undefined']
-        self.assertEquals(expected_status, TestrailReporter.STATUS_MAPS[Status.undefined.name])
+        self.assertEqual(expected_status, TestrailReporter.STATUS_MAPS[Status.undefined.name])
 
     def test_status_map_executing(self):
         expected_status = TestrailReporter.STATUS_MAPS[u'executing']
-        self.assertEquals(expected_status, TestrailReporter.STATUS_MAPS[Status.executing.name])
+        self.assertEqual(expected_status, TestrailReporter.STATUS_MAPS[Status.executing.name])
 
     def test_status_map_untested(self):
         expected_status = TestrailReporter.STATUS_MAPS[u'untested']
-        self.assertEquals(expected_status, TestrailReporter.STATUS_MAPS[Status.untested.name])
+        self.assertEqual(expected_status, TestrailReporter.STATUS_MAPS[Status.untested.name])
 
 
 class TestrailReporterTestLoadConfig(unittest.TestCase):
@@ -198,7 +198,7 @@ class TestrailReporterTestLoadConfig(unittest.TestCase):
             TestrailReporter(u'master')
 
         exception_message = u'Invalid testrail.yml file! error: \'base_url\' is a required property'
-        self.assertEquals(exception_message, context.exception.args[0])
+        self.assertEqual(exception_message, context.exception.args[0])
 
     def test_config_file_without_projects(self):
         self.addCleanup(partial(os.remove, u'testrail.yml'))
@@ -214,7 +214,7 @@ class TestrailReporterTestLoadConfig(unittest.TestCase):
             TestrailReporter(u'master')
 
         exception_message = u'Your testrail.yml config file does not have any project configured!'
-        self.assertEquals(exception_message, context.exception.args[0])
+        self.assertEqual(exception_message, context.exception.args[0])
 
 
 class TestrailProjectTestCase(unittest.TestCase):
@@ -222,28 +222,28 @@ class TestrailProjectTestCase(unittest.TestCase):
         project = TestrailProject(1, u'master', 3)
         test_run_name = project.get_test_run_name(branch_name=u'master')
 
-        self.assertEquals(u'master', test_run_name)
+        self.assertEqual(u'master', test_run_name)
 
     def test_get_test_run_name_branch(self):
         project = TestrailProject(1, u'My Test Suite {branch}', 3, u'')
         test_run_name = project.get_test_run_name(branch_name=u'master')
 
-        self.assertEquals(u'My Test Suite master', test_run_name)
+        self.assertEqual(u'My Test Suite master', test_run_name)
 
     def test_get_test_run_name_project_id(self):
         project = TestrailProject(1, u'My Test Suite {project_id}', 3)
         test_run_name = project.get_test_run_name(branch_name=u'master')
 
-        self.assertEquals(u'My Test Suite 1', test_run_name)
+        self.assertEqual(u'My Test Suite 1', test_run_name)
 
     def test_get_test_run_name_suite_id(self):
         project = TestrailProject(1, u'My Test Suite {suite_id}', 3)
         test_run_name = project.get_test_run_name(branch_name=u'master')
 
-        self.assertEquals(u'My Test Suite 3', test_run_name)
+        self.assertEqual(u'My Test Suite 3', test_run_name)
 
     def test_get_test_run_name_combined_vars(self):
         project = TestrailProject(1, u'My Test Suite {branch} {project_id} {suite_id}', 3)
         test_run_name = project.get_test_run_name(branch_name=u'master')
 
-        self.assertEquals(u'My Test Suite master 1 3', test_run_name)
+        self.assertEqual(u'My Test Suite master 1 3', test_run_name)
