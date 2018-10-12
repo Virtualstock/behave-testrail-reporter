@@ -10,18 +10,17 @@ from behave.model_core import Status
 
 from .api import APIClient
 
-optional_steps = (Status.untested,)
-status_order = (Status.passed, Status.failed, Status.skipped,
-                Status.undefined, Status.untested)
+OPTIONAL_STEPS = (Status.untested,)
+STATUS_ORDER = (Status.passed, Status.failed, Status.skipped, Status.undefined, Status.untested)
 
 
 def format_summary(statement_type, summary):
     parts = []
-    for status in status_order:
+    for status in STATUS_ORDER:
         if status.name not in summary:
             continue
         counts = summary[status.name]
-        if status in optional_steps and counts == 0:
+        if status in OPTIONAL_STEPS and counts == 0:
             # -- SHOW-ONLY: For relevant counts, suppress: untested items, etc.
             continue
 

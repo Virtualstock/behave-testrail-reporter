@@ -6,8 +6,8 @@ long_description = 'Please see our GitHub README'
 if os.path.exists('README.md'):
     long_description = open('README.md').read()
 
-requirements = ['jsonschema', 'behave', 'pyyaml', 'requests']
-test_requirements = ['coverage', 'flake8', 'mock', 'twine', 'codacy-coverage']
+REQUIREMENTS = ['jsonschema', 'behave', 'pyyaml', 'requests']
+TEST_REQUIREMENTS = ['coverage', 'flake8', 'mock', 'twine', 'codacy-coverage']
 
 setup(
     name='behave-testrail-reporter',
@@ -22,7 +22,7 @@ setup(
     keywords=['Behave', 'Testrail', 'API', 'Test', 'BDD'],
     long_description=long_description,
     long_description_content_type='text/markdown',
-    install_requires=requirements,
+    install_requires=REQUIREMENTS,
     classifiers=[
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',
@@ -30,5 +30,5 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     test_suite='test',
-    tests_require=test_requirements
+    tests_require=TEST_REQUIREMENTS
 )
