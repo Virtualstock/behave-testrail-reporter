@@ -151,7 +151,7 @@ class TestrailReporter(Reporter):
 
     def _load_projects_from_config(self, config):
         projects_config = config.get('projects', [])
-        if len(projects_config) is 0:
+        if len(projects_config) == 0:
             raise Exception(
                 u'Your testrail.yml config file does not have any project configured!')
 
