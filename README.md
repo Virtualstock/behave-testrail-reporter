@@ -4,6 +4,7 @@
 [![CircleCI](https://circleci.com/gh/Virtualstock/behave-testrail-reporter.svg?style=svg)](https://circleci.com/gh/Virtualstock/behave-testrail-reporter)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7823c0c33c6a4e12917113bfdc8a135b)](https://www.codacy.com/app/Virtualstock/behave-testrail-reporter?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Virtualstock/behave-testrail-reporter&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/7823c0c33c6a4e12917113bfdc8a135b)](https://www.codacy.com/app/Virtualstock/behave-testrail-reporter?utm_source=github.com&utm_medium=referral&utm_content=Virtualstock/behave-testrail-reporter&utm_campaign=Badge_Coverage)
+[![pullreminders](https://pullreminders.com/badge.svg)](https://pullreminders.com?ref=badge)
 
 This integration is used to add test results to TestRail automatically when Behave tests are executed.
 
