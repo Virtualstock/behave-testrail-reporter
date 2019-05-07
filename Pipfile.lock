@@ -201,7 +201,7 @@
                 "sha256:8be81d89d6e7b4c0d4e44bcc525845f6da25821de80cb5e06e7e0238a2899e32",
                 "sha256:da60d0014fd8c55eb48c1c5354352e363e2d30bbf7057e5e171a468390184c75"
             ],
-            "markers": "python_version < '3'",
+            "markers": "python_version == '2.7'",
             "version": "==3.7.4"
         },
         "contextlib2": {
@@ -351,11 +351,11 @@
         },
         "mock": {
             "hashes": [
-                "sha256:5ce3c71c5545b472da17b72268978914d0252980348636840bd34a00b5cc96c1",
-                "sha256:b158b6df76edd239b8208d481dc46b6afd45a846b7812ff0ce58971cf5bc8bba"
+                "sha256:21a2c07af3bbc4a77f9d14ac18fcc1782e8e7ea363df718740cdeaf61995b5e7",
+                "sha256:7868db2825a1563578869d4a011a036503a2f1d60f9ff9dd1e3205cd6e25fcec"
             ],
             "index": "pypi",
-            "version": "==2.0.0"
+            "version": "==3.0.4"
         },
         "nodeenv": {
             "hashes": [
@@ -370,13 +370,6 @@
             ],
             "markers": "python_version < '3'",
             "version": "==2.3.3"
-        },
-        "pbr": {
-            "hashes": [
-                "sha256:6901995b9b686cb90cceba67a0f6d4d14ae003cd59bc12beb61549bdfbe3bc89",
-                "sha256:d950c64aeea5456bbd147468382a5bb77fe692c13c9f00f0219814ce5b642755"
-            ],
-            "version": "==5.2.0"
         },
         "pkginfo": {
             "hashes": [
