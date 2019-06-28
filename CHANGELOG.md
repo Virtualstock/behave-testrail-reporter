@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.4.0] - 2019-06-28
+### Changed
+- Avoid unnecessary requests to Testrail when a branch is not allowed to create Test Runs.
+- Bump minor versions on dependencies to be up to date.
+
+
 ## [0.3.1] - 2018-08-29
 ### Changed
 - Fix TypeError: unhashable type using `Status` enum.
