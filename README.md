@@ -127,8 +127,17 @@ Feature: Log in and out
 
 Note: some scenarios can cover multiple TestRail cases, for that you just need to add multiple tags.
 
-## How to run tests
+## How to contribute
 
+### Install dependencies for development
+
+```
+pipenv install --dev
+```
+
+### How to run tests
+
+Activate your virtual environment and then just run tox.
 ```
 tox
 ```

@@ -12,7 +12,6 @@ requests = "*"
 [dev-packages]
 tox = "*"
 pre_commit = "*"
-"flake8" = "*"
 mock = "*"
 twine = "*"
 coverage = "*"
