@@ -44,10 +44,10 @@ class APIClient:
             response.raise_for_status()
         except requests.HTTPError as e:
             error_template = textwrap.dedent(
-                u"""
-                            Error ({error}) during GET to endpoint: ({endpoint})
-                            Response Content: {response_content}
-                        """
+                u"""\
+                    Error ({error}) during GET to endpoint: ({endpoint})
+                    Response Content: {response_content}
+                """
             )
             error_message = error_template.format(
                 error=e.message, endpoint=uri, response_content=response.content
@@ -63,11 +63,11 @@ class APIClient:
             response.raise_for_status()
         except requests.HTTPError as e:
             error_template = textwrap.dedent(
-                u"""
-                Error ({error}) during POST to endpoint: ({endpoint})
-                With data: {data}
-                Response Content: {response_content}
-            """
+                u"""\
+                    Error ({error}) during POST to endpoint: ({endpoint})
+                    With data: {data}
+                    Response Content: {response_content}
+                """
             )
             error_message = error_template.format(
                 error=e.message,
