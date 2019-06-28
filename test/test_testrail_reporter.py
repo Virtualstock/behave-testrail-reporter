@@ -137,6 +137,40 @@ class TestrailReporterTestCase(unittest.TestCase):
             elapsed_seconds=mock_scenario.duration,
         )
 
+    @mock.patch(
+        "behave_testrail_reporter.TestrailReporter._load_test_cases_for_project"
+    )
+    def test_process_scenario_prevents_unnecessary_processing(
+        self, mock_load_test_cases
+    ):
+        """
+        Ensure that when processing a scenario we exit as soon as possible
+        if the current branch being tested is not whitelisted in the project config.
+        This is to prevent load Testrail endpoints with unnecessary requests.
+        """
+        testrail_reporter = TestrailReporter(u"my-dev-feature-branch")
+        testrail_reporter.projects[0].cases = ["1104"]
+        # Restrict the 2 Testrail project to allow only Test runs from master branch.
+        testrail_reporter.projects[0].allowed_branch_pattern = u"master"
+        testrail_reporter.projects[1].allowed_branch_pattern = u"master"
+
+        step_01 = Mock(status=u"passed", keyword=u"given")
+        step_01.name = u"step_01 £"
+        steps = [step_01]
+
+        mock_feature = Mock(Feature)
+        mock_feature.tags = []
+
+        mock_scenario = Mock(Scenario)
+        mock_scenario.tags = [u"testrail-C1104"]
+        mock_scenario.name = u"Dummy scenario"
+        mock_scenario.steps = steps
+        mock_scenario.feature = mock_feature
+        mock_scenario.status = Status.passed
+
+        testrail_reporter.process_scenario(mock_scenario)
+        mock_load_test_cases.assert_not_called()
+
     def test_status_map_passed(self):
         expected_status = TestrailReporter.STATUS_MAPS[u"passed"]
         self.assertEqual(

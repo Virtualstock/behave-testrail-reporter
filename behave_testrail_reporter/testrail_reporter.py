@@ -255,6 +255,12 @@ class TestrailReporter(Reporter):
                 case_id = tag[len(TestrailReporter.CASE_TAG_PREFIX) :]
                 # loop through all projects to ensure if test exists on both projects it is pushed
                 for testrail_project in self.projects:
+                    # If the branch is not allowed to generate a test run for
+                    # the project we just skip to the next project.
+                    if not self._can_generate_test_run_for_branch(
+                        testrail_project, self.branch_name
+                    ):
+                        continue
                     if not testrail_project.cases:
                         self._load_test_cases_for_project(testrail_project)
                     if case_id in testrail_project.cases:
@@ -265,12 +271,6 @@ class TestrailReporter(Reporter):
                         # When adding a test result untested status is not allowed status
                         # @see http://docs.gurock.com/testrail-api2/reference-results#add_result
                         if testrail_status is self.STATUS_UNTESTED:
-                            self.case_summary[Status.skipped.name] += 1
-                            continue
-
-                        if not self._can_generate_test_run_for_branch(
-                            testrail_project, self.branch_name
-                        ):
                             self.case_summary[Status.skipped.name] += 1
                             continue
 
