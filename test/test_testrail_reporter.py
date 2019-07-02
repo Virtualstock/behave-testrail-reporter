@@ -266,6 +266,31 @@ class TestrailReporterTestLoadConfig(unittest.TestCase):
         )
         self.assertEqual(exception_message, context.exception.args[0])
 
+    def test_config_file_with_project_as_object(self):
+        """
+        Ensure that an exception is created for an invalid config with projects
+        containing an `object` instead of an `array` of projects.
+        """
+        self.addCleanup(partial(os.remove, u"testrail.yml"))
+        data = {
+            "base_url": "https://test.testrail.net",
+            "projects": {
+                "name": "Test project",
+                "suite_id": 11,
+                "id": 1,
+                "allowed_branch_pattern": ".*",
+            },
+        }
+
+        with open(u"testrail.yml", u"w") as outfile:
+            yaml.dump(data, outfile, default_flow_style=False)
+
+        with self.assertRaises(Exception) as context:
+            TestrailReporter(u"develop")
+
+        exception_message = u" is not of type 'array'"
+        self.assertIn(exception_message, context.exception.args[0])
+
 
 class TestrailProjectTestCase(unittest.TestCase):
     def test_get_test_run_name_default(self):
