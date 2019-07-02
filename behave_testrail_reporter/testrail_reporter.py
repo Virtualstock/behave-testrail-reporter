@@ -119,6 +119,7 @@ class TestrailReporter(Reporter):
             with open(u"testrail.yml", u"r") as stream:
                 try:
                     self.config = yaml.safe_load(stream)
+                    self._validate_config(self.config)
                     self._load_projects_from_config(self.config)
                 except yaml.YAMLError as exception:
                     raise Exception(
@@ -128,7 +129,6 @@ class TestrailReporter(Reporter):
             raise Exception(
                 u"Could not read `testrail.yml` file, check the file exists in root of your project."
             )
-        self._validate_config(self.config)
 
     def _validate_config(self, config):
         schema = """
