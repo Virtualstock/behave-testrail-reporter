@@ -68,8 +68,8 @@ projects:
 
 Allow only **master** branch and **release1.111.1** to push test results to Testrail:
 ```yaml
+base_url: https://your-domain.testrail.io
 projects:
-  base_url: https://your-domain.testrail.io
   - name: 'Full E2E tests on branch {branch}'
     id: 123
     suite_id: 456
