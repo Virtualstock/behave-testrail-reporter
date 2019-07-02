@@ -52,20 +52,25 @@ Example structure:
 
 
 ```yaml
+base_url: https://your-domain.testrail.io
 projects:
-  -
-    name: 'Test run {branch}'
+  - name: 'Advanced tests on branch {branch}'
     id: 123
     suite_id: 456
+    # note: this will allow any branch to push test case results to Testrail.
+    allowed_branch_pattern: '.*'
+  - name: 'Smoke tests on branch {branch}'
+    id: 1234
+    suite_id: 789
     # note: this will allow any branch to push test case results to Testrail.
     allowed_branch_pattern: '.*'
 ```
 
 Allow only **master** branch and **release1.111.1** to push test results to Testrail:
 ```yaml
+base_url: https://your-domain.testrail.io
 projects:
-  -
-    name: 'Test run {branch}'
+  - name: 'Full E2E tests on branch {branch}'
     id: 123
     suite_id: 456
     allowed_branch_pattern: '^(master|release\/\d+([\.\d]+)?)$'
