@@ -43,6 +43,10 @@ class APIClient:
         try:
             response.raise_for_status()
         except requests.HTTPError as e:
+            try:
+                exception_message = e.message
+            except Exception:
+                exception_message = f"{e}"
             error_template = textwrap.dedent(
                 u"""\
                     Error ({error}) during GET to endpoint: ({endpoint})
@@ -50,7 +54,7 @@ class APIClient:
                 """
             )
             error_message = error_template.format(
-                error=e.message, endpoint=uri, response_content=response.content
+                error=exception_message, endpoint=uri, response_content=response.content
             )
             raise APIError(error_message)
         else:
@@ -62,6 +66,10 @@ class APIClient:
         try:
             response.raise_for_status()
         except requests.HTTPError as e:
+            try:
+                exception_message = e.message
+            except Exception:
+                exception_message = f"{e}"
             error_template = textwrap.dedent(
                 u"""\
                     Error ({error}) during POST to endpoint: ({endpoint})
@@ -70,7 +78,7 @@ class APIClient:
                 """
             )
             error_message = error_template.format(
-                error=e.message,
+                error=exception_message,
                 endpoint=uri,
                 data=data,
                 response_content=response.content,
