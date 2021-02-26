@@ -156,8 +156,12 @@ class TestrailReporter(Reporter):
         try:
             validate(config, yaml.safe_load(schema))
         except Exception as exception:
+            try:
+                exception_message = exception.message
+            except AttributeError:
+                exception_message = f"{exception}"
             raise Exception(
-                u"Invalid testrail.yml file! error: {}".format(exception.message)
+                u"Invalid testrail.yml file! error: {}".format(exception_message)
             )
 
     def _load_projects_from_config(self, config):

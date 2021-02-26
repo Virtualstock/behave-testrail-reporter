@@ -45,7 +45,7 @@ class APIClient:
         except requests.HTTPError as e:
             try:
                 exception_message = e.message
-            except Exception:
+            except AttributeError:
                 exception_message = f"{e}"
             error_template = textwrap.dedent(
                 u"""\
@@ -68,7 +68,7 @@ class APIClient:
         except requests.HTTPError as e:
             try:
                 exception_message = e.message
-            except Exception:
+            except AttributeError:
                 exception_message = f"{e}"
             error_template = textwrap.dedent(
                 u"""\
