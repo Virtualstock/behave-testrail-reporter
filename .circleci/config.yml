@@ -24,6 +24,22 @@ jobs:
       - checkout
       - install_tox
       - run: tox -e py27
+  test_py34:
+    working_directory: ~/behave-testrail-reporter
+    docker:
+      - image: cimg/python:3.4
+    steps:
+      - checkout
+      - install_tox
+      - run: tox -e py34
+  test_py35:
+    working_directory: ~/behave-testrail-reporter
+    docker:
+      - image: cimg/python:3.5
+    steps:
+      - checkout
+      - install_tox
+      - run: tox -e py35
   test_py36:
     working_directory: ~/behave-testrail-reporter
     docker:
@@ -49,10 +65,18 @@ workflows:
       - test_py27:
           requires:
             - lint
+      - test_py34:
+          requires:
+            - lint
+      - test_py35:
+          requires:
+            - lint
       - test_py36:
           requires:
             - lint
       - coverage:
           requires:
             - test_py27
+            - test_py34
+            - test_py35
             - test_py36
