@@ -51,7 +51,7 @@ jobs:
 
 workflows:
   version: 2
-  build:
+  ci_pipeline:
     jobs:
       - lint
       - test_py27:
