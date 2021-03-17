@@ -1,5 +1,12 @@
 version: 2.1
 
+commands:
+  install_tox:
+    steps:
+      - run:
+          name: Install tox
+          command: pip install tox
+
 jobs:
   lint:
     working_directory: ~/behave-testrail-reporter
@@ -7,6 +14,7 @@ jobs:
       - image: cimg/python:3.6
     steps:
       - checkout
+      - install_tox
       - run: tox -e lint
   test_py27:
     working_directory: ~/behave-testrail-reporter
@@ -14,6 +22,7 @@ jobs:
       - image: cimg/python:2.7
     steps:
       - checkout
+      - install_tox
       - run: tox -e py27
   test_py36:
     working_directory: ~/behave-testrail-reporter
@@ -21,6 +30,7 @@ jobs:
       - image: cimg/python:3.6
     steps:
       - checkout
+      - install_tox
       - run: tox -e py36
   coverage:
     working_directory: ~/behave-testrail-reporter
@@ -28,6 +38,7 @@ jobs:
       - image: cimg/python:3.6
     steps:
       - checkout
+      - install_tox
       - run: tox -e coverage
 
 workflows:
