@@ -46,7 +46,7 @@ class APIClient:
             try:
                 exception_message = e.message
             except AttributeError:
-                exception_message = f"{e}"
+                exception_message = str(e)
             error_template = textwrap.dedent(
                 u"""\
                     Error ({error}) during GET to endpoint: ({endpoint})
@@ -69,7 +69,7 @@ class APIClient:
             try:
                 exception_message = e.message
             except AttributeError:
-                exception_message = f"{e}"
+                exception_message = str(e)
             error_template = textwrap.dedent(
                 u"""\
                     Error ({error}) during POST to endpoint: ({endpoint})

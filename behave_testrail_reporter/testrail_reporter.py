@@ -159,7 +159,7 @@ class TestrailReporter(Reporter):
             try:
                 exception_message = exception.message
             except AttributeError:
-                exception_message = f"{exception}"
+                exception_message = str(exception)
             raise Exception(
                 u"Invalid testrail.yml file! error: {}".format(exception_message)
             )
