@@ -1,10 +1,70 @@
-version: 2
+version: 2.1
+
+commands:
+  install_tox:
+    steps:
+      - run:
+          name: Install tox
+          command: pip install tox
 
 jobs:
-  build:
+  lint:
     working_directory: ~/behave-testrail-reporter
     docker:
-      - image: themattrix/tox
+      - image: cimg/python:3.6
     steps:
       - checkout
-      - run: tox
+      - install_tox
+      - run: tox -e lint
+  test_py27:
+    working_directory: ~/behave-testrail-reporter
+    docker:
+      - image: cimg/python:2.7
+    steps:
+      - checkout
+      - install_tox
+      - run: tox -e py27
+  test_py35:
+    working_directory: ~/behave-testrail-reporter
+    docker:
+      - image: cimg/python:3.5
+    steps:
+      - checkout
+      - install_tox
+      - run: tox -e py35
+  test_py36:
+    working_directory: ~/behave-testrail-reporter
+    docker:
+      - image: cimg/python:3.6
+    steps:
+      - checkout
+      - install_tox
+      - run: tox -e py36
+  coverage:
+    working_directory: ~/behave-testrail-reporter
+    docker:
+      - image: cimg/python:3.6
+    steps:
+      - checkout
+      - install_tox
+      - run: tox -e coverage
+
+workflows:
+  version: 2
+  ci_pipeline:
+    jobs:
+      - lint
+      - test_py27:
+          requires:
+            - lint
+      - test_py35:
+          requires:
+            - lint
+      - test_py36:
+          requires:
+            - lint
+      - coverage:
+          requires:
+            - test_py27
+            - test_py35
+            - test_py36

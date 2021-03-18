@@ -159,7 +159,7 @@ class TestrailReporter(Reporter):
             try:
                 exception_message = exception.message
             except AttributeError:
-                exception_message = f"{exception}"
+                exception_message = str(exception)
             raise Exception(
                 u"Invalid testrail.yml file! error: {}".format(exception_message)
             )
@@ -194,8 +194,10 @@ class TestrailReporter(Reporter):
         Sets up the testrail run for testrail_project.
         """
         test_run_name = testrail_project.get_test_run_name(branch_name=self.branch_name)
-        testrail_project.test_run = self._get_testrail_client().get_test_run_by_project_and_name(
-            project_id=testrail_project.id, test_run_name=test_run_name
+        testrail_project.test_run = (
+            self._get_testrail_client().get_test_run_by_project_and_name(
+                project_id=testrail_project.id, test_run_name=test_run_name
+            )
         )
 
         if testrail_project.test_run is None:

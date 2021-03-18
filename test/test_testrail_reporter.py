@@ -103,9 +103,7 @@ class TestrailReporterTestCase(unittest.TestCase):
     def test_process_scenario(
         self, mock_load_test_cases, mocked_post, add_test_result_mock
     ):
-        """
-            Test to ensure the data that we send to add_test_result is correct.
-        """
+        """Test to ensure the data that we send to add_test_result is correct."""
         testrail_reporter = TestrailReporter(u"master")
         testrail_reporter.projects[0].cases = ["1104"]
 
