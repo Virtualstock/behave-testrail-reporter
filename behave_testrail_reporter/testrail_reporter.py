@@ -3,6 +3,7 @@
 import re
 import yaml
 
+from traceback import format_tb
 from jsonschema import validate
 from behave.reporter.base import Reporter
 from behave.model import ScenarioOutline
@@ -235,11 +236,13 @@ class TestrailReporter(Reporter):
         comment = u"{}\n".format(scenario.name)
         comment += u"\n".join(
             [
-                u"->  {} {} [{}]".format(step.keyword, step.name, step.status)
+                u"->  {} {} [{}]{}".format(
+                    step.keyword, step.name, step.status, u"\n...\n%s" %
+                    u"".join(format_tb(step.exception.__traceback__)[-10:])
+                    if step.exception is not None else u"")
                 for step in scenario.steps
             ]
         )
-
         return comment
 
     def _format_duration(self, duration):

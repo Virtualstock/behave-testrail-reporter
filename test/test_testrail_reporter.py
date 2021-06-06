@@ -5,7 +5,7 @@ import sys
 import yaml
 import os
 from functools import partial
-
+from traceback import format_tb
 from mock import Mock, mock
 from behave.model import Scenario, Feature, Status
 
@@ -52,6 +52,7 @@ class TestrailReporterTestCase(unittest.TestCase):
         step_01.name = u"step_01"
         step_02 = Mock(status=u"passed", keyword=u"given")
         step_02.name = u"step_02"
+        step_01.exception = step_02.exception = None
 
         steps = [step_01, step_02]
 
@@ -68,9 +69,9 @@ class TestrailReporterTestCase(unittest.TestCase):
 
     def test_build_comment_for_scenario_with_utf8_string(self):
         testrail_reporter = TestrailReporter(u"master")
-
         step_01 = Mock(status=u"passed", keyword=u"given")
         step_01.name = u"step_01 £"
+        step_01.exception = None
 
         steps = [step_01]
 
@@ -79,6 +80,33 @@ class TestrailReporterTestCase(unittest.TestCase):
         mock_scenario.steps = steps
         comment = testrail_reporter._buid_comment_for_scenario(mock_scenario)
         expected_comment = u"Dummy scenario\n" u"->  given step_01 £ [passed]"
+        self.assertEqual(expected_comment, comment)
+
+    def test_build_comment_for_failed_scenario(self):
+        testrail_reporter = TestrailReporter(u"master")
+
+        step_01 = Mock(status=u"failed", keyword=u"given")
+        step_01.name = u"step_01"
+        step_01.exception = None
+
+        try:
+            assert False
+        except AssertionError as exc:
+            step_01.exception = exc
+
+        steps = [step_01]
+
+        mock_scenario = Mock(Scenario)
+        mock_scenario.name = u"Dummy scenario"
+        mock_scenario.steps = steps
+        comment = testrail_reporter._buid_comment_for_scenario(mock_scenario)
+
+        expected_comment = (
+            u"Dummy scenario\n"
+            u"->  given step_01 [failed]\n"
+            u"...\n"
+            u"%s" % u"".join(format_tb(step_01.exception.__traceback__)[-10:])
+        )
         self.assertEqual(expected_comment, comment)
 
     def test_format_duration(self):
@@ -109,6 +137,7 @@ class TestrailReporterTestCase(unittest.TestCase):
 
         step_01 = Mock(status=u"passed", keyword=u"given")
         step_01.name = u"step_01 £"
+        step_01.exception = None
         steps = [step_01]
 
         mock_feature = Mock(Feature)
