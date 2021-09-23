@@ -108,12 +108,27 @@ class APIClient:
                 return test_run
         return None
 
-    def get_cases(self, project_id, suite_id):
-        uri_get_project_cases = u"get_cases/{project}&suite_id={suite}".format(
-            project=project_id, suite=suite_id
+    def _build_get_cases_endpoint(self, project_id, suite_id, offset=0):
+        return u"get_cases/{project}&suite_id={suite}&offset={offset}".format(
+            project=project_id, suite=suite_id, offset=offset
         )
 
-        return self.send_get(uri=uri_get_project_cases)
+    def get_cases(self, project_id, suite_id, fetched_cases=[], offset=0):
+        """This will recursively fetch cases from Testrail API until there are no more pages to fetch."""
+        uri_get_project_cases = self._build_get_cases_endpoint(
+            project_id, suite_id, offset=offset
+        )
+        api_response = self.send_get(uri=uri_get_project_cases)
+
+        cases = fetched_cases + api_response["cases"]
+
+        if api_response["_links"]["next"]:
+            next_offset = offset + api_response["limit"]
+            cases = self.get_cases(
+                project_id, suite_id, fetched_cases=cases, offset=next_offset
+            )
+
+        return cases
 
     def create_result(self, run_id, case_id, status, comment, elapsed, version=None):
         uri_add_test_result = u"add_result_for_case/{run}/{test_case}".format(
