@@ -99,14 +99,34 @@ class APIClient:
         return self.send_post(uri=uri_create_test_run, data=post_data)
 
     def get_test_run_by_project_and_name(self, project_id, test_run_name):
-        uri_get_project_test_runs = u"get_runs/{project_id}&is_completed=0".format(
-            project_id=project_id
-        )
-        response = self.send_get(uri=uri_get_project_test_runs)
-        for test_run in response:
+        test_runs = self.get_test_runs(project_id)
+
+        for test_run in test_runs:
             if test_run[u"name"] == test_run_name:
                 return test_run
         return None
+
+    def _build_incomplete_test_runs_endpoint(self, project_id, offset):
+        return u"get_runs/{project_id}&is_completed=0&offset={offset}".format(
+            project_id=project_id, offset=offset
+        )
+
+    def get_test_runs(self, project_id, fetched_test_runs=[], offset=0):
+        uri_get_project_test_runs = self._build_incomplete_test_runs_endpoint(
+            project_id, offset
+        )
+
+        api_response = self.send_get(uri=uri_get_project_test_runs)
+
+        test_runs = fetched_test_runs + api_response["runs"]
+
+        if api_response["_links"]["next"]:
+            next_offset = offset + api_response["limit"]
+            test_runs = self.get_test_runs(
+                project_id, fetched_test_runs=test_runs, offset=next_offset
+            )
+
+        return test_runs
 
     def _build_get_cases_endpoint(self, project_id, suite_id, offset=0):
         return u"get_cases/{project}&suite_id={suite}&offset={offset}".format(
