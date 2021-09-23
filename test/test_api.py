@@ -3,7 +3,6 @@
 import unittest
 import os
 import mock
-import json
 
 from behave_testrail_reporter.api import APIClient
 
@@ -191,3 +190,118 @@ class APIClientTestCase(unittest.TestCase):
 
         self.assertEqual(expected_number_of_cases, len(cases))
         self.assertEqual(expected_cases, cases)
+
+    def test_get_runs(self):
+        test_environment = {
+            u"TESTRAIL_USER": u"homer@springfield.test",
+            u"TESTRAIL_KEY": u"simpson123",
+        }
+        fake_project_id = 111
+
+        fake_testrail_v2_runs_response_1_json = {
+            "offset": 0,
+            "limit": 1,
+            "size": 1,
+            "_links": {
+                "next": "/api/v2/get_runs/111&is_completed=0&name=master&limit=1&offset=1",
+                "prev": None,
+            },
+            "runs": [
+                {
+                    "id": 1865,
+                    "suite_id": 996,
+                    "name": "Test run v0.5.0",
+                    "description": None,
+                    "milestone_id": None,
+                    "assignedto_id": 84,
+                    "include_all": True,
+                    "is_completed": False,
+                    "completed_on": None,
+                    "config": None,
+                    "config_ids": [],
+                    "passed_count": 56,
+                    "blocked_count": 0,
+                    "untested_count": 187,
+                    "retest_count": 1,
+                    "failed_count": 0,
+                    "custom_status1_count": 0,
+                    "custom_status2_count": 0,
+                    "custom_status3_count": 0,
+                    "custom_status4_count": 0,
+                    "custom_status5_count": 0,
+                    "custom_status6_count": 0,
+                    "custom_status7_count": 0,
+                    "project_id": 12,
+                    "plan_id": None,
+                    "created_on": 1632311406,
+                    "updated_on": 1632311406,
+                    "refs": None,
+                    "created_by": 84,
+                    "url": "https://custom-domain.testrail.test/index.php?/runs/view/1865",
+                }
+            ],
+        }
+        fake_testrail_v2_runs_response_2_json = {
+            "offset": 1,
+            "limit": 1,
+            "size": 1,
+            "_links": {"next": None, "prev": None},
+            "runs": [
+                {
+                    "id": 1502,
+                    "suite_id": 663,
+                    "name": "The Edge for Retail - master",
+                    "description": None,
+                    "milestone_id": None,
+                    "assignedto_id": None,
+                    "include_all": True,
+                    "is_completed": False,
+                    "completed_on": None,
+                    "config": None,
+                    "config_ids": [],
+                    "passed_count": 147,
+                    "blocked_count": 0,
+                    "untested_count": 3,
+                    "retest_count": 0,
+                    "failed_count": 0,
+                    "custom_status1_count": 0,
+                    "custom_status2_count": 0,
+                    "custom_status3_count": 0,
+                    "custom_status4_count": 0,
+                    "custom_status5_count": 0,
+                    "custom_status6_count": 0,
+                    "custom_status7_count": 0,
+                    "project_id": 12,
+                    "plan_id": None,
+                    "created_on": 1583761764,
+                    "updated_on": 1583761764,
+                    "refs": None,
+                    "created_by": 37,
+                    "url": "https://custom-domain.testrail.test/index.php?/runs/view/1502",
+                }
+            ],
+        }
+        expected_number_of_test_runs = 2
+        expected_test_runs = (
+            fake_testrail_v2_runs_response_1_json["runs"]
+            + fake_testrail_v2_runs_response_2_json["runs"]
+        )
+
+        mock_response_1 = self.build_mocked_requests_get_response(
+            json_data=fake_testrail_v2_runs_response_1_json, status_code=200
+        )
+        mock_response_2 = self.build_mocked_requests_get_response(
+            json_data=fake_testrail_v2_runs_response_2_json, status_code=200
+        )
+
+        with mock.patch.dict(os.environ, test_environment):
+            api_client = APIClient(base_url="https://www.testrail.test")
+
+        with mock.patch(
+            "behave_testrail_reporter.api.requests.Session.get"
+        ) as request_mock:
+            request_mock.side_effect = [mock_response_1, mock_response_2]
+            test_runs = api_client.get_test_runs(project_id=fake_project_id)
+
+        self.assertEqual(expected_number_of_test_runs, len(test_runs))
+        self.assertEqual(expected_test_runs, test_runs)

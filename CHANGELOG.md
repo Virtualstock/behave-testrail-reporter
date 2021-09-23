@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.5.1] - 2021-09-23
+### Changed
+- Handle new Testrail get test runs paginated response to keep same behaviour of fetching all test runs.
+
 ## [0.5.0] - 2021-09-23
 ### Changed
 - Handle new Testrail get cases paginated response to keep same behaviour of fetching all cases.
