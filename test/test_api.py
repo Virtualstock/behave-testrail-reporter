@@ -19,7 +19,7 @@ class APIClientTestCase(unittest.TestCase):
                 return self.json_data
 
             def raise_for_status(self):
-                pass
+                """@todo Implement this when you need to test how bad responses are handled."""
 
         return MockResponse(json_data, status_code)
 
